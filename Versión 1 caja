@@ -1,0 +1,89 @@
+#include <iostream>
+#include <conio.h>
+#include <stdlib.h>
+#include <time.h>
+
+#define alto 20
+#define ancho 20
+#define arriba 72
+#define abajo 80	
+#define izquierda 75
+#define derecha 77
+
+using namespace std;
+using namespace System;
+
+void matrizxd(int **matriz)
+{
+	for (int i = 1;i <= alto;i++)
+	{
+		for (int j = 1;j <= ancho;j++)
+		{
+			if ((i == 1) || (0 == ancho - j) || (alto - i == 0) || (j== 1))
+			{
+				matriz[i][j] = 1;
+			}
+			else
+			{
+				matriz[i][j] = 0;
+			}
+		}
+	}
+}
+void dibuja(int **matriz)
+{
+	for (int i = 1;i <= alto;i++)
+	{
+		for (int j = 1;j <= ancho;j++)
+		{
+			Console::SetCursorPosition(i, j);
+			if (matriz[i][j] == 2) { Console::ForegroundColor = ConsoleColor::Red; cout << char(219);}
+			if (matriz[i][j] == 1) { Console::ForegroundColor = ConsoleColor::Cyan; cout << char(219);}
+			if (matriz[i][j] == 0) { Console::ForegroundColor = ConsoleColor::White; cout << char(219);}
+		}
+		cout << endl;
+	}
+}
+void moverojo(int **matriz,int x, int y)
+{
+	srand(time(NULL));
+	int num;
+	num = rand();
+	while (true)
+	{
+		/*if (kbhit())
+		{
+			char tecla = getch();
+			if (tecla == izquierda) { x--; if (x <= 1) { x++; }};
+			if (tecla == derecha) { x++; if (x >= ancho) { x--; }};
+			if (tecla == arriba) { y--; if (y <= 1) { y++; }};
+			if (tecla == abajo) { y++; if (y >= alto) { y--; }};
+			matrizxd(matriz);
+			matriz[x][y] = 2;
+			dibuja(matriz);
+		}*/
+		num = 1 + rand() % (4 + 1 - 1);
+		if (num == 1) { x--; if (x <= 1) { x++; } }else
+		if (num == 2) { x++; if (x >= ancho) { x--; } }else
+		if (num == 3) { y--; if (y <= 1) { y++; } }else
+		if (num == 4) { y++; if (y >= alto) { y--; } }
+		matrizxd(matriz);
+		matriz[x][y] = 2;
+		dibuja(matriz);
+		_sleep(40);
+	}
+}
+int main()
+{
+	int x=5, y=10;
+	int **matriz = new int*[alto];
+	for (int i = 1; i <= ancho;i++)
+	{
+		matriz[i] = new int[ancho];
+	}
+	Console::CursorVisible = false;
+	matrizxd(matriz);
+	dibuja(matriz);
+	moverojo(matriz,x,y);
+	_getch();
+}
